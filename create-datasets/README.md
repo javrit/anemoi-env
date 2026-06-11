@@ -72,7 +72,7 @@ puv run anemoi-datasets grib-index \
 
 ### 3b. Create the Zarr datasets (SLURM job array)
 
-The Zarr datasets are created in parallel for all 35 members using a SLURM job array.
+The Zarr datasets are created in parallel for all 35 members (both PEARP and SDEdit) using a SLURM job array.
 
 The SLURM script uses a template config YAML and patches the member-specific paths
 (index DB path) for each member via `sed`. The config template is
@@ -107,6 +107,7 @@ config_used.sh
 > outputs (the 06h and 12h steps are missing by construction). These must be
 > explicitly listed under `dates.missing`.
 
+This workflow must be done also to create the PEARP (global model) dataset.
 ---
 
 # AFTER inference : Netcdf to numpy

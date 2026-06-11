@@ -43,8 +43,7 @@ See the READMEs in `create-datasets/` and `forecast-inference/` for more advance
 
 ### 2. Ensemble inference with enriched initial conditions
 
-This workflow uses SDEdit-perturbed states as initial conditions for ensemble forecasts.
-It involves three steps, described below.
+This workflow generates an ensemble of forecasts using 35 PEARPEGE members as global forcing. For each member, inference is run individually to build the full ensemble. The LAM initial conditions can be either the standard AROME analysis (giving a 35-member ensemble driven by PEARPEGE perturbations only) or SDEdit-perturbed states (giving a 35×35 ensemble combining both PEARPEGE and SDEdit perturbations).
 
 #### Step 1 — Create the datasets
 

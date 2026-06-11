@@ -22,8 +22,8 @@ For each GRIB file matching the input glob pattern:
   - Shifts the remaining steps by -3h and updates validityDate/validityTime accordingly
   - Writes the result to OUTPUT_DIR, renaming the file with date + 1 day
 
-Input filename format : SDEdit_YYYY-MM-DD_preprocessed.grib
-Output filename format: SDEdit_YYYY-MM-DD+1_post_processed.grib
+Input filename format : SDEdit_YYYY-MM-DD_member.grib
+Output filename format: SDEdit_YYYY-MM-DD+1_member.grib
 
 Example:
     SDEdit_2024-10-14_0.grib -> SDEdit_2024-10-15_0.grib

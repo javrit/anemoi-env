@@ -1,3 +1,30 @@
+"""
+nc_to_npy.py
+=============
+Converts NetCDF inference outputs to NumPy arrays for ensemble scoring.
+
+For each date in [DATE_START, DATE_END], this script:
+  - Finds all NetCDF files matching the pattern SDEdit_<date>_*.nc in DIR_NETCDF
+    (one file per ensemble member)
+  - For each file, reads the variables defined in VARS and pivots the flat
+    (lat, lon, value) data into 2D spatial arrays
+  - Groups the results by lead time (starting at +6h, incrementing by 6h per time step)
+  - Concatenates all members along the first axis to get an array of shape
+    (n_members, n_variables, lat, lon)
+  - Saves one .npy file per (date, lead time) pair
+
+Configuration
+-------------
+VARS       : list of variables to extract
+DATE_START : first date to process (inclusive)
+DATE_END   : last date to process (inclusive)
+DIR_NETCDF : directory containing the NetCDF files
+
+Output format
+-------------
+SDEdit_<date>_<leadtime>.npy  →  shape (n_members, n_variables, n_lat, n_lon)
+"""
+
 import xarray as xr
 import numpy as np
 from tqdm import tqdm
