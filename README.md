@@ -31,7 +31,7 @@ From here you can:
 
 ```bash
 # Training
-puv run anemoi-training train --config-name=your_config.yaml
+puv run anemoi-training train --config-name=your_config.yaml --config-dir path/to/config/dir/anemoi-training
 
 # SDEdit inference
 puv run anemoi-inference run your_inference_config.yaml
