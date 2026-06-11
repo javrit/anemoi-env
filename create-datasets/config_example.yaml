@@ -1,0 +1,60 @@
+dates:
+  start: ???
+  end: ???
+
+  frequency: ???
+  missing:
+    
+input:
+  join:
+  - pipe:
+    - grib-index:
+        indexdb: path/to/dataset/folder/membre3/database_3.db
+        param: [q, t, u, v, z]
+        levtype: pl
+        level: [50,100, 150,  200,  250,  300, 400,  500, 700, 850, 925,  1000]
+    - remove_nans: {}
+
+  - pipe:
+    - grib-index:
+        indexdb: path/to/dataset/folder/membre3/database_3.db
+        param: [2t,2d,10u,10v, prmsl]
+        levtype: sfc
+    - remove_nans: {}
+    - rename:
+        param:
+          prmsl: msl
+  - pipe:
+    - grib-index:
+        indexdb: path/to/dataset/folder/membre3/database_3.db
+        param: [ sp, skt]
+        levtype: sfc
+    - remove_nans: {}
+
+  # Constant forcing fields
+
+  - forcings:
+      template: ${input.join.0.pipe.1.remove_nans}
+      param:
+      - cos_julian_day
+      - sin_julian_day
+      - cos_local_time
+      - sin_local_time
+      - cos_latitude
+      - sin_latitude
+      - cos_longitude
+      - sin_longitude
+      - insolation
+
+  # Geometrical height and land-sea mask fields
+  - repeated_dates:
+      date: 2063-05-15 00:00:00
+      mode: constant
+      source:
+        pipe:
+        - grib:
+            path: /project/home/p200177/DE_371/resources/AROME_IA/CONSTANT_AROME_EURW1S40_2024_withmask.grb
+        - rename:
+            param:
+              h: z
+        - remove_nans: {}

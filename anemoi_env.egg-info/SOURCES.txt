@@ -1,0 +1,7 @@
+post_process_grib.py
+pyproject.toml
+anemoi_env.egg-info/PKG-INFO
+anemoi_env.egg-info/SOURCES.txt
+anemoi_env.egg-info/dependency_links.txt
+anemoi_env.egg-info/requires.txt
+anemoi_env.egg-info/top_level.txt

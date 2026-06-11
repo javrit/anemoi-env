@@ -1,0 +1,30 @@
+[project]
+name = "2-titanera-big-datasets-inference"
+version = "0.2.0"
+description = "Météo-France's utilities to build NWP models within anemoi."
+dependencies = [
+    "anemoi-inference>=0.8.1",
+    "anemoi-datasets==0.5.28",
+    "anemoi-transform==0.1.23",
+    "anemoi-utils==0.4.40",
+    "anemoi-models==0.8.1",
+    "anemoi-mf-transform-plugins",
+    "eccodeslib>=2.46.2.19",
+    "earthkit-data>=0.14.4",
+    "torch>=2.11.0",
+]
+requires-python = ">=3.11, <3.12"
+
+[tool.uv.sources]
+anemoi-mf-transform-plugins = { git = "https://github.com/javrit/anemoi-inference", subdirectory = "anemoi-transform", branch = "main" }
+torch = { index = "pytorch-cu128" }
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+### Tmp
+anemoi-datasets = { git = "https://github.com/ecmwf/anemoi-datasets", branch = "main" }
+anemoi-models = { git = "https://github.com/javrit/anemoi-core", subdirectory = "models", branch = "main" }
+anemoi-training = { git = "https://github.com/javrit/anemoi-core", subdirectory = "training", branch = "main" }

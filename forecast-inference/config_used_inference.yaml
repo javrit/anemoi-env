@@ -1,0 +1,32 @@
+runner: parallel
+allow_nans: true
+lead_time: 48
+checkpoint : /project/home/p200177/DE_371/resources/AROME_IA/SILVERFLY/inference-last.ckpt
+date: 2024-10-02T00:00
+input:
+  cutout:
+    - lam_0:
+        dataset:
+          dataset: /project/home/p200177/DE_371/datasets/arome-an-oper-titan-0p025-2024-2024-1h-v5-eurw-precip-6-october.zarr
+          rescale:
+            q_100:
+              scale: 0.1
+              offset: 0.0
+    - global:
+        dataset: /project/home/p200177/DE_371/datasets/aifs-ea-an-oper-0001-mars-n320-2020-2024-1h-v2-precip6/aifs-ea-an-oper-0001-mars-n320-2020-2024-1h-v2-precip6/aifs-ea-an-oper-0001-mars-n320-2020-2024-1h-v2-precip6.zarr
+output:
+  extract_lam:
+    output:
+        netcdf:
+          path: /project/home/p200177/DE_371/angeliquebonamy/anemoi/inferences/arome_ia/SDEDIT/{date}_{step}.nc
+          write_initial_state: false
+
+post_processors:
+  - backward_transform_filter:
+      filter: rescale
+      param: tp
+      scale: 0.001
+      offset: 0
+  - accumulate_from_start_of_forecast:
+      accumulations:
+        - tp

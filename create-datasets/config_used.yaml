@@ -1,0 +1,119 @@
+dates:
+  start: 2024-10-19T18:00:00Z
+  end: 2024-10-30T00:00:00Z
+
+  frequency: 6h
+  missing:
+    - 2024-10-01T06:00:00Z
+    - 2024-10-01T12:00:00Z
+    - 2024-10-02T06:00:00Z
+    - 2024-10-02T12:00:00Z
+    - 2024-10-03T06:00:00Z
+    - 2024-10-03T12:00:00Z
+    - 2024-10-04T06:00:00Z
+    - 2024-10-04T12:00:00Z
+    - 2024-10-05T06:00:00Z
+    - 2024-10-05T12:00:00Z
+    - 2024-10-06T06:00:00Z
+    - 2024-10-06T12:00:00Z
+    - 2024-10-07T06:00:00Z
+    - 2024-10-07T12:00:00Z
+    - 2024-10-08T06:00:00Z
+    - 2024-10-08T12:00:00Z
+    - 2024-10-09T06:00:00Z
+    - 2024-10-09T12:00:00Z
+    - 2024-10-10T06:00:00Z
+    - 2024-10-10T12:00:00Z
+    - 2024-10-11T06:00:00Z
+    - 2024-10-11T12:00:00Z
+    - 2024-10-12T06:00:00Z
+    - 2024-10-12T12:00:00Z
+    - 2024-10-13T06:00:00Z
+    - 2024-10-13T12:00:00Z
+    - 2024-10-14T06:00:00Z
+    - 2024-10-14T12:00:00Z
+    - 2024-10-15T06:00:00Z
+    - 2024-10-15T12:00:00Z
+    - 2024-10-16T06:00:00Z
+    - 2024-10-16T12:00:00Z
+    - 2024-10-17T06:00:00Z
+    - 2024-10-17T12:00:00Z
+    - 2024-10-18T06:00:00Z
+    - 2024-10-18T12:00:00Z
+    - 2024-10-19T06:00:00Z
+    - 2024-10-19T12:00:00Z
+    - 2024-10-20T06:00:00Z
+    - 2024-10-20T12:00:00Z
+    - 2024-10-21T06:00:00Z
+    - 2024-10-21T12:00:00Z
+    - 2024-10-22T06:00:00Z
+    - 2024-10-22T12:00:00Z
+    - 2024-10-23T06:00:00Z
+    - 2024-10-23T12:00:00Z
+    - 2024-10-24T06:00:00Z
+    - 2024-10-24T12:00:00Z
+    - 2024-10-25T06:00:00Z
+    - 2024-10-25T12:00:00Z
+    - 2024-10-26T06:00:00Z
+    - 2024-10-26T12:00:00Z
+    - 2024-10-27T06:00:00Z
+    - 2024-10-27T12:00:00Z
+    - 2024-10-28T06:00:00Z
+    - 2024-10-28T12:00:00Z
+    - 2024-10-29T06:00:00Z
+    - 2024-10-29T12:00:00Z
+    - 2024-10-30T06:00:00Z
+    - 2024-10-30T12:00:00Z
+input:
+  join:
+  - pipe:
+    - grib-index:
+        indexdb: /project/home/p200177/DE_371/angeliquebonamy/anemoi/inferences/dataset_SDEDIT_102024/membre3/database_3.db
+        param: [q, t, u, v, z]
+        levtype: pl
+        level: [50,100, 150,  200,  250,  300, 400,  500, 700, 850, 925,  1000]
+    - remove_nans: {}
+
+  - pipe:
+    - grib-index:
+        indexdb: /project/home/p200177/DE_371/angeliquebonamy/anemoi/inferences/dataset_SDEDIT_102024/membre3/database_3.db 
+        param: [2t,2d,10u,10v, prmsl]
+        levtype: sfc
+    - remove_nans: {}
+    - rename:
+        param:
+          prmsl: msl
+  - pipe:
+    - grib-index:
+        indexdb: /project/home/p200177/DE_371/angeliquebonamy/anemoi/inferences/dataset_SDEDIT_102024/membre3/database_3.db
+        param: [ sp, skt]
+        levtype: sfc
+    - remove_nans: {}
+
+  # Constant forcing fields
+
+  - forcings:
+      template: ${input.join.0.pipe.1.remove_nans}
+      param:
+      - cos_julian_day
+      - sin_julian_day
+      - cos_local_time
+      - sin_local_time
+      - cos_latitude
+      - sin_latitude
+      - cos_longitude
+      - sin_longitude
+      - insolation
+
+  # Geometrical height and land-sea mask fields
+  - repeated_dates:
+      date: 2063-05-15 00:00:00
+      mode: constant
+      source:
+        pipe:
+        - grib:
+            path: /project/home/p200177/DE_371/resources/AROME_IA/CONSTANT_AROME_EURW1S40_2024_withmask.grb
+        - rename:
+            param:
+              h: z
+        - remove_nans: {}

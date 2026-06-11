@@ -1,0 +1,32 @@
+runner: parallel
+allow_nans: true
+lead_time: 48
+checkpoint : /apth/to/checkpoint.ckpt
+date: ???
+input:
+  cutout:
+    - lam_0:
+        dataset:
+          dataset: path/to/SDEdit_dataset_memberX.zarr
+          rescale:
+            q_100:
+              scale: 0.1
+              offset: 0.0
+    - global:
+        dataset: path/to/PEARP_dataset_memberX.zarr
+output:
+  extract_lam:
+    output:
+        netcdf:
+          path: path/to/output.nc
+          write_initial_state: false
+
+post_processors:
+  - backward_transform_filter:
+      filter: rescale
+      param: tp
+      scale: 0.001
+      offset: 0
+  - accumulate_from_start_of_forecast:
+      accumulations:
+        - tp
