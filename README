@@ -1,0 +1,84 @@
+# anemoi-env
+
+This repository contains the environment and scripts for training, finetuning, and running inference with the Météo-France data-driven weather model.
+
+---
+
+## Repository structure
+
+```
+anemoi-env/
+├── create-datasets/       # Scripts and configs to build Zarr datasets from GRIB outputs
+├── forecast-inference/    # Configs and scripts to run ensemble inference
+├── pyproject.toml         # Environment dependencies
+├── uv.lock
+└── README.md
+```
+
+---
+
+## Workflows
+
+### 1. Training, finetuning, SDEdit inference
+
+For standard training, finetuning, and SDEdit inference, work directly from the root of this repository:
+
+```bash
+cd /path/to/anemoi-env/
+```
+
+From here you can:
+
+```bash
+# Training
+puv run anemoi-training train --config-name=your_config.yaml
+
+# SDEdit inference
+puv run anemoi-inference run your_inference_config.yaml
+```
+
+See the READMEs in `create-datasets/` and `forecast-inference/` for more advanced workflows.
+
+---
+
+### 2. Ensemble inference with enriched initial conditions
+
+This workflow uses SDEdit-perturbed states as initial conditions for ensemble forecasts.
+It involves three steps, described below.
+
+#### Step 1 — Create the datasets
+
+Move to the `create-datasets/` folder:
+
+```bash
+cd create-datasets/
+```
+
+Follow the `README` there to:
+- Post-process the SDEdit GRIB outputs
+- Index the GRIB files
+- Build one Zarr dataset per member
+
+#### Step 2 — Run ensemble inference
+
+Move to the `forecast-inference/` folder:
+
+```bash
+cd ../forecast-inference/
+```
+
+Follow the `README` there to run the ensemble inference for each member.
+Outputs are saved as NetCDF files.
+
+#### Step 3 — Convert NetCDF to NumPy for scoring
+
+Return to `create-datasets/`:
+
+```bash
+cd ../create-datasets/
+```
+
+Run the conversion script to transform the NetCDF outputs into NumPy arrays.
+Both the NetCDF files and the NumPy arrays are required to compute scores.
+See the `README` in `create-datasets/` for the exact command and arguments.
+EOF
