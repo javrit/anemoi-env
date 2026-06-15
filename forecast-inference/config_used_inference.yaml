@@ -1,7 +1,7 @@
 runner: parallel
 allow_nans: true
 lead_time: 48
-checkpoint : /project/home/p200177/DE_371/resources/AROME_IA/SILVERFLY/inference-last.ckpt
+checkpoint : /path/to/forecast-inference-ckpt.ckpt
 date: 2024-10-02T00:00
 input:
   cutout:
