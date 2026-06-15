@@ -30,7 +30,9 @@ dataset_folder/
 ## Step 1 — Run SDEdit inference
 
 Run the inference for each member to produce GRIB files. Each GRIB file corresponds
-to one member for a given date. See the ../ README for details.
+to one member for a given date. The goal is to obtain, for each date, 35 perturbed AROME analysis, to associate each one with a member of the global ensemble model (PEARP).
+
+The generated perturbed state must correspond to the input of the forecast model.
 
 ---
 
@@ -81,13 +83,13 @@ The SLURM script uses a template config YAML and patches the member-specific pat
 A slurm example is available at :
 
 ```
-slurm_example.sh
+create_zarr_dataset_example.sh
 ```
 
 The slurm used for our experiments is available at :
 
 ```
-slurm_used.sh
+create_zarr_dataset_used.sh
 ```
 
 
